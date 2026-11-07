@@ -752,7 +752,7 @@ input::placeholder,textarea::placeholder{color:var(--muted);opacity:1}
 .qmood button.mdn,.mseg button.mdn{border-bottom:3px solid color-mix(in srgb,var(--c-down) 70%,transparent)}
 .egodue{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;align-items:center;padding:10px 12px;border-radius:12px;background:color-mix(in srgb,var(--c-AC) 10%,var(--surface-op));border:1px solid color-mix(in srgb,var(--c-AC) 35%,var(--line));font-size:.86rem}
 .note-safety{margin:4px 0 0;font-size:.74rem;color:var(--muted);border-left:3px solid var(--dawn);padding:4px 10px}
-.gtabs.g3{grid-template-columns:repeat(3,minmax(0,1fr))}
+.gtabs.one{grid-template-columns:1fr}
 .sgrp{display:grid;gap:6px;margin-bottom:10px}
 .sgrp>b{font-size:.78rem;color:var(--muted);font-weight:700;display:flex;align-items:center;gap:6px}
 .sgrp>b i{width:10px;height:10px;border-radius:3px}
@@ -807,14 +807,12 @@ ol.qs li:first-child{border-top:0;padding-top:0}
   </div>
 
   <section data-view="input" class="card">
-    <h2 id="quickTitle">今日の気分をワンタップで記録</h2>
+    <h2 id="quickTitle">今日のチェック</h2>
     <div class="quick">
-      <div class="qmood" id="qMood" role="group" aria-label="今日の気分"></div>
-      <span class="hint" id="qMoodHint"></span>
-      <div class="egodue" id="egoDue" hidden></div>
+      <div class="egodue" id="egoDue"></div>
       <div class="reportrow" id="reportRow">
         <button class="btn ghost big" id="copyReport">今日の記録をコピー</button>
-        <span class="hint" id="reportHint">今日の気分・睡眠・様子・メモをまとめてコピーします。通院先や家族に伝えるときに貼り付けて使えます。</span>
+        <span class="hint" id="reportHint">今日のエゴグラム・睡眠・メモをまとめてコピーします。通院先や家族に伝えるときに貼り付けて使えます。</span>
       </div>
     </div>
   </section>
@@ -846,10 +844,9 @@ ol.qs li:first-child{border-top:0;padding-top:0}
         <div class="gquick"><button type="button" data-gq="7">直近7日</button><button type="button" data-gq="30">直近30日</button><button type="button" data-gq="90">直近3か月</button><button type="button" data-gq="180">直近半年</button></div>
       </div>
     </div>
-    <div class="gtabs g3" role="tablist" aria-label="グラフの種類">
-      <button type="button" role="tab" data-gt="wave">気分の波<small>気分・活力・睡眠</small></button>
+    <div class="gtabs" role="tablist" aria-label="グラフの種類">
       <button type="button" role="tab" data-gt="ego">エゴグラム<small>形と変化</small></button>
-      <button type="button" role="tab" data-gt="signs">様子<small>サインの回数</small></button>
+      <button type="button" role="tab" data-gt="sleep">睡眠<small>睡眠時間と眠りの感じ</small></button>
     </div>
     <h2 id="chartTitle" class="vh">グラフ</h2>
     <div id="chart"></div>
@@ -865,31 +862,13 @@ ol.qs li:first-child{border-top:0;padding-top:0}
       <button class="btn sm" id="barSaveAll">まとめて記録</button></div>
     </div>
 
-    <div class="sec" data-sec="mood">
-      <div class="sechead"><h3>気分・活力</h3><span class="secstate" id="st-mood"></span></div>
-      <div class="field"><span class="lbl">気分の高さ（−3 とても沈んでいる 〜 ＋3 とても高い）</span><div class="mseg" data-ms="mood" role="group" aria-label="気分の高さ"></div><span class="hint" data-msl="mood"></span></div>
-      <div class="field"><span class="lbl">活力・エネルギー（−3 ぐったり 〜 ＋3 ありあまる）</span><div class="mseg" data-ms="energy" role="group" aria-label="活力"></div><span class="hint" data-msl="energy"></span></div>
-      <div class="field"><span class="lbl">不安・イライラ（0 なし 〜 4 とても強い）</span><div class="mseg five" data-ms="anx" role="group" aria-label="不安・イライラ"></div><span class="hint" data-msl="anx"></span></div>
-      <span class="hint">ここ1日のだいたいの感じで選びます。同じボタンをもう一度押すと選択を外せます。</span>
-      <div class="warnbox" id="w-mood" hidden></div>
-      <div class="secfoot"><button class="btn ghost" data-unset="mood">選択をすべて外す</button><button class="btn" data-save="mood">気分・活力を記録</button></div>
-    </div>
-
     <div class="sec" data-sec="sleep">
-      <div class="sechead"><h3>睡眠</h3><span class="secstate" id="st-sleep"></span></div>
+      <div class="sechead"><h3>睡眠（任意）</h3><span class="secstate" id="st-sleep"></span></div>
       <div class="field"><label for="fSleep">昨夜の睡眠時間</label><div class="inline"><input type="number" id="fSleep" min="0" max="24" step="0.5" inputmode="decimal" placeholder="例 7" style="max-width:8em"><span>時間</span></div><div class="qchips" data-fav="sleep"></div></div>
       <div class="field"><span class="lbl">眠りの感じ</span><div class="opts" id="sleepQ"></div></div>
-      <span class="hint">睡眠時間が急に短くなっても平気な日が続くとき、逆に眠りすぎる日が続くときは、気分の波と一緒に見ておくと役に立ちます。</span>
+      <span class="hint">入れたい日だけで大丈夫です（空欄でも記録漏れにはなりません）。使わないときは「設定 → 使う機能」で欄ごと隠せます。</span>
       <div class="warnbox" id="w-sleep" hidden></div>
       <div class="secfoot"><button class="btn" data-save="sleep">睡眠を記録</button></div>
-    </div>
-
-    <div class="sec" data-sec="signs">
-      <div class="sechead"><h3>様子のチェック</h3><span class="secstate" id="st-signs"></span></div>
-      <div id="signChips"></div>
-      <span class="hint">当てはまるものを押します（何回でも付け外しできます）。何もなければ、何も押さずに記録すると「特になし」になります。項目は「設定 → 様子のチェックの項目」で変えられます。</span>
-      <div class="warnbox" id="w-signs" hidden></div>
-      <div class="secfoot"><button class="btn" data-save="signs">様子を記録</button></div>
     </div>
 
     <div class="sec" data-sec="ego">
@@ -931,7 +910,7 @@ ol.qs li:first-child{border-top:0;padding-top:0}
     <section class="card">
       <h2>記録漏れ</h2>
       <div class="seg seg-sm" role="group" aria-label="記録漏れの対象" id="gapKind">
-        <button data-kind="any">何も記録なし</button><button data-kind="mood">気分</button><button data-kind="sleep">睡眠</button>
+        <button data-kind="any">何も記録なし</button><button data-kind="sleep">睡眠</button>
       </div>
       <div id="gapStrip"></div>
       <div id="gapList"></div>
@@ -943,7 +922,7 @@ ol.qs li:first-child{border-top:0;padding-top:0}
     </section>
   </div>
   <div id="pageSettings" class="pagewrap setpage" hidden>
-    <div class="fhead sethead"><h3>設定</h3><select id="sgJump" class="jumpsel" aria-label="設定の項目へ移動"><option value="">項目へ移動…</option><option value="sgName">アプリの名前</option><option value="sg0">使う機能</option><option value="sgSigns">様子のチェックの項目</option><option value="sg1">画面の見え方</option><option value="sg3">グラフの色</option><option value="sg4">背景</option><option value="sgCard">ウィンドウの色</option><option value="sgText">文字の色</option><option value="sg5">入力候補ボタン</option><option value="sgShortcut">ショートカット</option><option value="sgData">データの引き継ぎ</option></select><div class="hbtns"><button class="btn ghost" id="undoSettings" disabled>↶ 一つ前に戻す</button></div>
+    <div class="fhead sethead"><h3>設定</h3><select id="sgJump" class="jumpsel" aria-label="設定の項目へ移動"><option value="">項目へ移動…</option><option value="sgName">アプリの名前</option><option value="sg0">使う機能</option><option value="sg1">画面の見え方</option><option value="sg3">グラフの色</option><option value="sg4">背景</option><option value="sgCard">ウィンドウの色</option><option value="sgText">文字の色</option><option value="sg5">入力候補ボタン</option><option value="sgShortcut">ショートカット</option><option value="sgData">データの引き継ぎ</option></select><div class="hbtns"><button class="btn ghost" id="undoSettings" disabled>↶ 一つ前に戻す</button></div>
     </div>
     <section class="slotcard" id="slotTop" aria-label="セーブスロット"></section>
     <details class="sgroup" id="sgName"><summary><span class="sgt">アプリの名前<small>画面上部のタイトルと、その横の小さな説明</small></span></summary><div class="sgbody">
@@ -955,23 +934,18 @@ ol.qs li:first-child{border-top:0;padding-top:0}
       <span class="hint">例：「きぶん帳」「こころの記録」など。ホーム画面に追加したときの名前は、追加するときに付け直せます。</span>
     </div></details>
     <details class="sgroup" id="sg0" open><summary><span class="sgt">使う機能<small>記録する項目を、必要なものだけ選ぶ</small></span></summary><div class="sgbody">
-      <p class="hint" style="margin-top:0">チェックを入れた項目が記録画面に欄として並び、グラフやカレンダーにも反映されます。外すと隠れます（記録は消えません）。気分・活力はいつも表示されます。</p>
-      <div class="fgrp"><h5>記録する項目</h5>
+      <p class="hint" style="margin-top:0">簡易エゴグラムはいつも表示されます。チェックを入れた項目が記録画面に欄として並びます。外すと隠れます（記録は消えません）。</p>
+      <div class="fgrp"><h5>簡易エゴグラム</h5>
+      <div class="setrow">チェックの目安 <input type="number" id="egoEvery" min="3" max="60" inputmode="numeric"> 日ごと</div><span class="hint">前回から目安の日数がたつと、記録画面の上に案内が出ます。同じ間隔でくり返すと、形の変化を比べやすくなります。</span>
+      </div>
+      <div class="fgrp"><h5>任意で記録する項目</h5>
       <label class="markrow"><input type="checkbox" data-feat="show_sleep"><span>睡眠（睡眠時間・眠りの感じ）</span><span></span></label>
-      <label class="markrow"><input type="checkbox" data-feat="show_signs"><span>様子のチェック（上がり気味・下がり気味のサイン）</span><span></span></label>
-      <label class="markrow"><input type="checkbox" data-feat="show_ego"><span>簡易エゴグラム（25問・約3分）</span><span></span></label>
-      <div class="feat" id="featEgo"><div class="setrow">チェックの目安 <input type="number" id="egoEvery" min="3" max="60" inputmode="numeric"> 日ごと</div><span class="hint">前回から目安の日数がたつと、記録画面の上に案内が出ます。同じ間隔でくり返すと、形の変化を比べやすくなります。</span></div>
       <label class="markrow"><input type="checkbox" data-feat="show_note"><span>出来事・メモ</span><span></span></label>
       </div>
       <div class="fgrp"><h5>表示・共有</h5>
       <label class="markrow"><input type="checkbox" id="welcomeOn"><span>起動時のようこそ画面</span><span></span></label>
       <label class="markrow"><input type="checkbox" data-feat="share"><span>「今日の記録をコピー」と「テキストでコピー」</span><span></span></label>
       </div>
-    </div></details>
-    <details class="sgroup" id="sgSigns"><summary><span class="sgt">様子のチェックの項目<small>上がり気味・下がり気味のサインを追加・削除</small></span></summary><div class="sgbody">
-      <div id="signSet"></div>
-      <div class="setrow"><button class="btn ghost sm" id="addSign">＋ 項目を追加</button><button class="btn ghost sm" id="resetSigns">初期状態に戻す</button></div>
-      <span class="hint">「上がり気味」「下がり気味」「その他」に分けておくと、グラフの「様子」でそれぞれ何日あったかを見られます。自分に起きやすいサインを入れておくのがおすすめです。</span>
     </div></details>
     <details class="sgroup" id="sg1"><summary><span class="sgt">画面の見え方<small>ライト／ダーク・明るさ・鮮やかさ・色合い</small></span></summary><div class="sgbody">
       <div class="opts" id="modeOpts">
@@ -984,7 +958,7 @@ ol.qs li:first-child{border-top:0;padding-top:0}
         <div><button class="btn ghost" id="resetFx">見え方を元に戻す</button></div>
       </div>
     </div></details>
-    <details class="sgroup" id="sg3"><summary><span class="sgt">グラフの色<small>気分・活力・不安・睡眠・エゴグラムの線の色</small></span></summary><div class="sgbody">
+    <details class="sgroup" id="sg3"><summary><span class="sgt">グラフの色<small>エゴグラムの5つの尺度と睡眠の色</small></span></summary><div class="sgbody">
       <div id="gColors"></div>
       <div style="margin-top:8px"><button class="btn ghost" id="resetColors">色を初期値に戻す</button></div>
     </div></details>
@@ -1231,7 +1205,7 @@ const egoLv=v=>v>=7?'hi':v<=3?'lo':'mid',EGO_LV={hi:'高め',mid:'中くらい',
 
 const DEF={mode:'system',colors:{mood:'#d9822b',energy:'#2f8f80',anx:'#c74f6f',sleep:'#5b6fd6',down:'#4b63c9',CP:'#c74f6f',NP:'#d9822b',A:'#2f8f80',FC:'#2b8fd6',AC:'#8a63c9'},bg:{type:'none',color:'#c9d3e6',alpha:84,blur:0},appName:'My mood',appSub:'',look:{bright:100,sat:100,hue:0},text:{mode:'auto',color:'#1b2233'}};
 const merge=s=>{s=s||{};if(s.appSubMode==null)s={...s,appSubMode:'auto'};
-  return{...clone(DEF),...s,features:{show_sleep:true,show_signs:true,show_ego:true,show_note:true,share:true,...(s.features||{})},colors:{...DEF.colors,...(s.colors||{})},bg:{...DEF.bg,...(s.bg||{})},text:{...DEF.text,...(s.text||{})},look:{...DEF.look,...(s.look||{})},card:{mode:'auto',color:'#ffffff',keep:true,...(s.card||{})},access:s.access==='high'?'high':'std',
+  return{...clone(DEF),...s,features:{show_sleep:true,show_note:true,share:true,...(s.features||{})},colors:{...DEF.colors,...(s.colors||{})},bg:{...DEF.bg,...(s.bg||{})},text:{...DEF.text,...(s.text||{})},look:{...DEF.look,...(s.look||{})},card:{mode:'auto',color:'#ffffff',keep:true,...(s.card||{})},access:s.access==='high'?'high':'std',
     signs:Array.isArray(s.signs)?clone(s.signs):clone(DEF_SIGNS),sleepFavs:Array.isArray(s.sleepFavs)?s.sleepFavs.slice():[5,6,7,8,9],egoEvery:Math.min(60,Math.max(3,+s.egoEvery||14))}};
 let S={days:{},settings:merge(),bgImage:null,slots:null};
 let view='month', sel=ymd(new Date()), dirty=false, store=null;
@@ -1324,7 +1298,7 @@ async function initStore(){
 function appSubText(){const st=S.settings,m=st.appSubMode||'auto';if(m==='none')return'';if(m==='custom')return st.appSub||'';
   const cnt={},add=k=>cnt[k]=(cnt[k]||0)+1,today=new Date();
   for(let i=0;i<30;i++){const r=S.days[ymd(addDays(today,-i))];if(!r)continue;
-    if(r.mood!=null||r.energy!=null)add('気分');if(r.sleepH!=null||r.sleepQ)add('睡眠');if(Array.isArray(r.signs))add('様子');if(r.ego)add('エゴグラム');if(r.note)add('メモ')}
+    if(r.ego)add('エゴグラム');if(FEAT().show_sleep!==false&&(r.sleepH!=null||r.sleepQ))add('睡眠');if(r.note)add('メモ')}
   return Object.entries(cnt).sort((a,b)=>b[1]-a[1]).slice(0,3).map(x=>x[0]).join('・')}
 function applyLook(){
   const st=S.settings,root=document.documentElement;
@@ -1412,22 +1386,18 @@ function applyTextColor(){const st=S.settings,root=document.documentElement;
   root.style.setProperty('--accent',acc);root.style.setProperty('--accent-ink',accInk);root.style.setProperty('--danger',fit(tk.danger));root.style.setProperty('--dawn',fit(tk.dawn));
   root.style.colorScheme=lightInk?'dark':'light';
   try{renderReadMeter()}catch(e){}}
+const dDiff=(a,b)=>Math.round((parse(b)-parse(a))/864e5);
 /* ---------- 記録の中身 ---------- */
-const SEC={mood:1,sleep:1,signs:1,ego:1,note:1};
-const SEC_KEYS={mood:['mood','energy','anx'],sleep:['sleepH','sleepQ'],signs:['signs'],ego:['ego'],note:['note']};
-const SEC_NAME={mood:'気分・活力',sleep:'睡眠',signs:'様子のチェック',ego:'簡易エゴグラム',note:'出来事・メモ'};
-const TAB_LABEL={mood:'気分・活力',sleep:'睡眠',signs:'様子のチェック',ego:'エゴグラム',note:'メモ'};
+const SEC={sleep:1,ego:1,note:1};
+const SEC_KEYS={sleep:['sleepH','sleepQ'],ego:['ego'],note:['note']};
+const SEC_NAME={sleep:'睡眠',ego:'簡易エゴグラム',note:'出来事・メモ'};
+const TAB_LABEL={sleep:'睡眠（任意）',ego:'エゴグラム',note:'メモ'};
 const hasSec=(r,sec)=>{if(!r)return false;
-  if(sec==='mood')return r.mood!=null||r.energy!=null||r.anx!=null;
   if(sec==='sleep')return r.sleepH!=null||!!r.sleepQ;
-  if(sec==='signs')return Array.isArray(r.signs);
   if(sec==='ego')return!!(r.ego&&r.ego.s);
   if(sec==='note')return!!(r.note&&r.note.trim());return false};
-const signGroup=t=>{const x=S.settings.signs.find(y=>y.t===t);return x?x.g:'other'};
 function secSummary(sec,r){if(!r)return'';try{
-  if(sec==='mood')return[r.mood!=null?'気分'+sgn(r.mood):'',r.energy!=null?'活力'+sgn(r.energy):'',r.anx!=null?'不安'+r.anx:''].filter(Boolean).join('・');
   if(sec==='sleep')return(r.sleepH!=null?r.sleepH+'時間':'')+(r.sleepQ?(r.sleepH!=null?'・':'')+r.sleepQ:'');
-  if(sec==='signs')return r.signs.length?r.signs.slice(0,2).join('・')+(r.signs.length>2?' ほか'+(r.signs.length-2):''):'特になし';
   if(sec==='ego')return SCALES.map(k=>k+r.ego.s[k]).join(' ');
   if(sec==='note')return(r.note||'').split('\n')[0].slice(0,18);
   }catch(e){}return''}
@@ -1435,25 +1405,15 @@ const describe=r=>{if(!r)return'記録なし';const a=SEC_KEYS&&Object.keys(SEC)
 const egoDays=()=>Object.keys(S.days).filter(k=>S.days[k]&&S.days[k].ego&&S.days[k].ego.s).sort();
 const prevEgo=k=>{const L=egoDays().filter(x=>x<k);return L.length?L[L.length-1]:null};
 
-/* ---------- 今日の気分をワンタップで ---------- */
-function msButtons(kind,cur){const d=MS_DEF[kind],out=[];for(let v=d.min;v<=d.max;v++){const cls=kind==='anx'?'':v>0?'mup':v<0?'mdn':'';
-  out.push('<button type="button" data-v="'+v+'"'+(cls?' class="'+cls+'"':'')+' aria-pressed="'+(cur===v)+'" aria-label="'+(kind==='anx'?v:sgn(v))+' '+d.L[v]+'"><b>'+(kind==='anx'?v:sgn(v))+'</b><small>'+d.L[v]+'</small></button>')}return out.join('')}
-function renderQuick(){const k=ymd(new Date()),r=S.days[k]||{};
-  $('#qMood').innerHTML=msButtons('mood',r.mood??null);
-  $('#qMoodHint').textContent=r.mood!=null?md(k)+'の気分：'+sgn(r.mood)+'（'+MOOD_L[r.mood]+'）を記録済みです。押し直すと上書きします。':'押すとすぐに'+md(k)+'の気分として記録します。活力や睡眠は下のフォームから入れられます。';
-  const f=FEAT(),due=$('#egoDue');
-  if(f.show_ego){const L=egoDays(),last=L[L.length-1],n=last?dDiff(last,k):null,ev=S.settings.egoEvery;
-    if(!last||n>=ev){due.hidden=false;due.innerHTML='<span>'+(last?'前回の簡易エゴグラム（'+md(last)+'）から<b>'+n+'日</b>たちました（目安：'+ev+'日ごと）。':'簡易エゴグラムをまだしていません。最初の1回をしておくと、あとで形の変化を比べられます。')+'</span><button type="button" class="btn sm" id="egoGo">いまチェック</button>';
-      $('#egoGo').onclick=()=>{selectDate(k);openEgo()}}else due.hidden=true}else due.hidden=true;
-  $('#reportRow').hidden=!f.share}
-$('#qMood').addEventListener('click',e=>{const b=e.target.closest('[data-v]');if(!b)return;const k=ymd(new Date()),v=+b.dataset.v;
-  const before=S.days[k]?clone(S.days[k]):null,prev=before&&before.mood;
-  S.days[k]={...(before||{}),mood:v};saveDay(k);
-  changed(k,before,'気分を'+(prev!=null?sgn(prev)+'→'+sgn(v)+'に上書き':sgn(v)+'で記録'),md(k)+'の気分を '+sgn(v)+'（'+MOOD_L[v]+'）で記録しました');
-  render(false);if(k===sel&&!dirtySecs.has('mood')){fillSec('mood');headState()}});
+/* ---------- 今日のチェック（エゴグラムの案内） ---------- */
+function renderQuick(){const k=ymd(new Date()),r=S.days[k],L=egoDays(),last=L.filter(x=>x<k).pop(),ev=S.settings.egoEvery,box=$('#egoDue');
+  if(r&&r.ego&&r.ego.s)box.innerHTML='<span>今日の簡易エゴグラムは記録済みです：<b>'+SCALES.map(x=>x+r.ego.s[x]).join(' ')+'</b></span><button type="button" class="btn ghost sm" id="egoGo">結果を見る</button>';
+  else{const n=last?dDiff(last,k):null;
+    box.innerHTML='<span>'+(!last?'簡易エゴグラムをまだしていません。最初の1回をしておくと、あとで形の変化を比べられます（25問・約3分）。':n>=ev?'前回（'+md(last)+'）から<b>'+n+'日</b>たちました。そろそろ次のチェックの目安です（'+ev+'日ごと）。':'前回は'+md(last)+'（'+n+'日前）でした。次の目安まであと'+(ev-n)+'日です。')+'</span><button type="button" class="btn sm" id="egoGo">いまチェック</button>'}
+  $('#egoGo').onclick=()=>{selectDate(k);if(r&&r.ego&&r.ego.s){showView('input');goSec(document.querySelector('#form .sec[data-sec="ego"]'))}else openEgo()};
+  $('#reportRow').hidden=!FEAT().share}
 
 /* ---------- calendar ---------- */
-const dDiff=(a,b)=>Math.round((parse(b)-parse(a))/864e5);
 function rangeDays(){
   if(mainView==='graph')return graphDays();
   const d=parse(sel);
@@ -1461,12 +1421,10 @@ function rangeDays(){
   if(view==='week'){const st=addDays(d,-d.getDay());return[...Array(7)].map((_,i)=>ymd(addDays(st,i)))}
   const n=new Date(d.getFullYear(),d.getMonth()+1,0).getDate();
   return[...Array(n)].map((_,i)=>ymd(new Date(d.getFullYear(),d.getMonth(),i+1)))}
-const tint=v=>v==null||v===0?'':'background:color-mix(in srgb,var('+(v>0?'--c-mood':'--c-down')+') '+[0,14,26,40][Math.abs(v)]+'%,transparent)';
-function cellHTML(k,cls){const d=parse(k),r=S.days[k]||{};
-  const sg=Array.isArray(r.signs)?r.signs:[],up=sg.some(t=>signGroup(t)==='up'),dn=sg.some(t=>signGroup(t)==='down');
-  const dots=(r.ego&&r.ego.s?'<i class="dot" style="background:var(--c-AC)"></i>':'')+(up?'<i class="dot" style="background:var(--c-mood)"></i>':'')+(dn?'<i class="dot" style="background:var(--c-down)"></i>':'')+(r.note&&r.note.trim()?'<i class="dot" style="background:var(--muted)"></i>':'');
-  const c=['cell',cls||'',k===ymd(new Date())?'today':'',k===sel?'sel':''].join(' ');
-  return '<button class="'+c+'" data-k="'+k+'" style="'+tint(r.mood)+'" aria-label="'+md(k)+(r.mood!=null?' 気分'+sgn(r.mood):'')+'"><span class="n">'+d.getDate()+'</span><span class="dots">'+dots+'</span><span class="mv">'+(r.mood!=null?sgn(r.mood):r.sleepH!=null?r.sleepH+'h':'')+'</span></button>'}
+function cellHTML(k,cls){const d=parse(k),r=S.days[k]||{},f=FEAT();
+  const ego=!!(r.ego&&r.ego.s),dots=(ego?'<i class="dot" style="background:var(--c-AC)"></i>':'')+(f.show_note!==false&&r.note&&r.note.trim()?'<i class="dot" style="background:var(--muted)"></i>':'');
+  const c=['cell',cls||'',k===ymd(new Date())?'today':'',k===sel?'sel':'',ego?'egoday':''].join(' ');
+  return '<button class="'+c+'" data-k="'+k+'" aria-label="'+md(k)+(ego?' エゴグラムあり':'')+'"><span class="n">'+d.getDate()+'</span><span class="dots">'+dots+'</span><span class="mv">'+(f.show_sleep!==false&&r.sleepH!=null?r.sleepH+'h':'')+'</span></button>'}
 function renderCal(){
   const d=parse(sel);let h='';
   document.querySelectorAll('#spanSeg button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.span===view));
@@ -1484,8 +1442,7 @@ function renderCal(){
     const ks=[...Array(7)].map((_,i)=>ymd(addDays(d,i-3)));
     h='<div class="grid">'+ks.map(k=>'<div class="wd">'+WD[parse(k).getDay()]+'</div>').join('')+ks.map(k=>cellHTML(k)).join('')+'</div>'}
   $('#cal').innerHTML=h;
-  $('#legend').innerHTML='<span><i class="dot" style="background:color-mix(in srgb,var(--c-mood) 40%,transparent);border-radius:3px"></i>気分が高い日</span><span><i class="dot" style="background:color-mix(in srgb,var(--c-down) 40%,transparent);border-radius:3px"></i>気分が低い日</span><span>色が濃いほど ±3 に近い</span>'+
-    (FEAT().show_ego?'<span><i class="dot" style="background:var(--c-AC)"></i>エゴグラム</span>':'')+(FEAT().show_signs?'<span><i class="dot" style="background:var(--c-mood)"></i>上がり気味のサイン</span><span><i class="dot" style="background:var(--c-down)"></i>下がり気味のサイン</span>':'')+(FEAT().show_note?'<span><i class="dot" style="background:var(--muted)"></i>メモ</span>':'')}
+  $('#legend').innerHTML='<span><i class="dot" style="background:var(--c-AC)"></i>簡易エゴグラムをした日</span>'+(FEAT().show_note!==false?'<span><i class="dot" style="background:var(--muted)"></i>メモ</span>':'')+(FEAT().show_sleep!==false?'<span>数字＝睡眠時間</span>':'')}
 $('#cal').addEventListener('click',e=>{const b=e.target.closest('[data-k]');if(!b)return;selectDate(b.dataset.k)});
 document.querySelectorAll('#spanSeg button').forEach(b=>b.onclick=()=>{view=b.dataset.span;render(false)});
 function shift(n){const d=parse(sel);
@@ -1503,24 +1460,18 @@ $('#viewSeg').addEventListener('click',e=>{const b=e.target.closest('[data-v]');
 $('#dPrev').onclick=()=>selectDate(ymd(addDays(parse(sel),-1)));
 $('#dNext').onclick=()=>selectDate(ymd(addDays(parse(sel),1)));
 function renderSelDay(){const r=S.days[sel],box=$('#selDay');if(!box)return;
-  const bits=r?Object.keys(SEC).filter(x=>secVisible(x)&&hasSec(r,x)).map(x=>x==='mood'?secSummary(x,r):TAB_LABEL[x]+' '+secSummary(x,r)).slice(0,4):[];
+  const bits=r?Object.keys(SEC).filter(x=>secVisible(x)&&hasSec(r,x)).map(x=>TAB_LABEL[x].replace('（任意）','')+' '+secSummary(x,r)).slice(0,4):[];
   box.innerHTML='<div><b>'+ymdJ(sel)+'</b><small>'+(bits.length?esc(bits.join('／')):'まだ記録がありません')+'</small></div><button type="button" class="btn" id="goInput">'+(r?'記録を見る':'この日を記録')+'</button>';
   $('#goInput').onclick=()=>showView('input')}
 function selectDate(k){if(dirty&&k!==sel)toast('保存していない変更は破棄しました');sel=k;dirty=false;render(true)}
 
 /* ---------- 入力フォーム ---------- */
 const F={sleep:$('#fSleep'),note:$('#fNote')};
-let dirtySecs=new Set(),fm={mood:null,energy:null,anx:null,sleepQ:'',signs:new Set(),ego:null};
-const secVisible=sec=>{const f=FEAT();return sec==='mood'||(sec==='sleep'&&f.show_sleep!==false)||(sec==='signs'&&f.show_signs!==false)||(sec==='ego'&&f.show_ego!==false)||(sec==='note'&&f.show_note!==false)};
+let dirtySecs=new Set(),fm={sleepQ:'',ego:null};
+const secVisible=sec=>{const f=FEAT();return sec==='ego'||(sec==='sleep'&&f.show_sleep!==false)||(sec==='note'&&f.show_note!==false)};
 function applyFeatures(){document.querySelectorAll('#form .sec').forEach(se=>se.hidden=!secVisible(se.dataset.sec));
   const f=FEAT();if($('#reportRow'))$('#reportRow').hidden=!f.share;if($('#openExport'))$('#openExport').hidden=!f.share;
-  document.querySelectorAll('.gtabs [data-gt]').forEach(b=>b.hidden=(b.dataset.gt==='ego'&&f.show_ego===false)||(b.dataset.gt==='signs'&&f.show_signs===false));
-  document.querySelector('.gtabs').classList.toggle('g3',[...document.querySelectorAll('.gtabs [data-gt]')].filter(b=>!b.hidden).length===3)}
-function renderMS(kind){const box=document.querySelector('[data-ms="'+kind+'"]');box.innerHTML=msButtons(kind,fm[kind]);
-  const lb=document.querySelector('[data-msl="'+kind+'"]'),v=fm[kind];lb.textContent=v==null?'未選択':'選択中：'+(kind==='anx'?v:sgn(v))+'（'+MS_DEF[kind].L[v]+'）'}
-document.querySelectorAll('[data-ms]').forEach(box=>box.addEventListener('click',e=>{const b=e.target.closest('[data-v]');if(!b)return;const k=box.dataset.ms,v=+b.dataset.v;
-  fm[k]=fm[k]===v?null:v;renderMS(k);markDirty('mood')}));
-document.querySelector('[data-unset="mood"]').onclick=()=>{fm.mood=fm.energy=fm.anx=null;['mood','energy','anx'].forEach(renderMS);markDirty('mood')};
+  const sb=document.querySelector('.gtabs [data-gt="sleep"]');sb.hidden=f.show_sleep===false;document.querySelector('.gtabs').classList.toggle('one',sb.hidden)}
 function renderSleepQ(){$('#sleepQ').innerHTML=SLEEPQ.map(q=>'<button type="button" data-q="'+esc(q)+'" aria-pressed="'+(fm.sleepQ===q)+'">'+esc(q)+'</button>').join('')}
 $('#sleepQ').addEventListener('click',e=>{const b=e.target.closest('[data-q]');if(!b)return;fm.sleepQ=fm.sleepQ===b.dataset.q?'':b.dataset.q;renderSleepQ();markDirty('sleep')});
 F.sleep.addEventListener('input',()=>{markDirty('sleep');renderFavs()});
@@ -1532,11 +1483,6 @@ function renderFavs(){const box=document.querySelector('[data-fav="sleep"]');if(
   list.sort((a,b)=>a[0]-b[0]);const cur=F.sleep.value===''?null:+F.sleep.value;
   box.innerHTML=list.map(([v,fr])=>'<button type="button" data-v="'+v+'"'+(fr?' class="freq" title="よく使う値"':'')+' aria-pressed="'+(v===cur)+'">'+v+'時間</button>').join('')}
 document.querySelector('[data-fav="sleep"]').addEventListener('click',e=>{const b=e.target.closest('[data-v]');if(!b)return;F.sleep.value=b.dataset.v;markDirty('sleep');renderFavs()});
-function renderSigns(){const L=S.settings.signs;
-  $('#signChips').innerHTML=['up','down','other'].map(g=>{const it=L.filter(x=>x.g===g&&x.t);if(!it.length)return'';
-    return '<div class="sgrp"><b><i style="background:'+SIGN_G[g][1]+'"></i>'+SIGN_G[g][0]+'</b><div class="chips">'+it.map(x=>'<button type="button" data-sign="'+esc(x.t)+'" aria-pressed="'+fm.signs.has(x.t)+'">'+esc(x.t)+'</button>').join('')+'</div></div>'}).join('')+
-    ([...fm.signs].filter(t=>!L.some(x=>x.t===t)).length?'<div class="sgrp"><b>以前の項目</b><div class="chips">'+[...fm.signs].filter(t=>!L.some(x=>x.t===t)).map(t=>'<button type="button" data-sign="'+esc(t)+'" aria-pressed="true">'+esc(t)+'</button>').join('')+'</div></div>':'')}
-$('#signChips').addEventListener('click',e=>{const b=e.target.closest('[data-sign]');if(!b)return;const t=b.dataset.sign;fm.signs.has(t)?fm.signs.delete(t):fm.signs.add(t);renderSigns();markDirty('signs')});
 $('#noteChips').innerHTML=NOTE_CHIPS.map(t=>'<button type="button" data-t="'+t+'">'+t.replace('：','')+'</button>').join('');
 $('#noteChips').addEventListener('click',e=>{const b=e.target.closest('[data-t]');if(!b)return;const v=F.note.value;F.note.value=(v&&!v.endsWith('\n')?v+'\n':v)+b.dataset.t;F.note.focus();F.note.setSelectionRange(F.note.value.length,F.note.value.length);markDirty('note')});
 F.note.addEventListener('input',()=>markDirty('note'));
@@ -1548,9 +1494,7 @@ function secState(sec){const el=$('#st-'+sec),r=S.days[sel];clearTimeout(secStat
 function headState(){$('#fState').textContent=S.days[sel]?'記録あり':'未記録'}
 function markDirty(sec){dirtySecs.add(sec);dirty=true;$('#w-'+sec).hidden=true;secState(sec)}
 function fillSec(sec){const r=S.days[sel]||{};
-  if(sec==='mood'){fm.mood=r.mood??null;fm.energy=r.energy??null;fm.anx=r.anx??null;['mood','energy','anx'].forEach(renderMS)}
-  else if(sec==='sleep'){F.sleep.value=r.sleepH??'';fm.sleepQ=r.sleepQ||'';renderSleepQ();renderFavs()}
-  else if(sec==='signs'){fm.signs=new Set(Array.isArray(r.signs)?r.signs:[]);renderSigns()}
+  if(sec==='sleep'){F.sleep.value=r.sleepH??'';fm.sleepQ=r.sleepQ||'';renderSleepQ();renderFavs()}
   else if(sec==='ego'){fm.ego=r.ego?clone(r.ego):null;renderEgoBox()}
   else F.note.value=r.note||'';
   dirtySecs.delete(sec);dirty=dirtySecs.size>0;$('#w-'+sec).hidden=true;secState(sec)}
@@ -1558,14 +1502,12 @@ function fillForm(){const d=parse(sel);
   $('#fDate').textContent=(d.getMonth()+1)+'月'+d.getDate()+'日('+WD[d.getDay()]+')の記録';
   Object.keys(SEC).forEach(fillSec);headState();dirty=false;buildFormJump();openFirstTodo()}
 function openFirstTodo(){const r=S.days[sel],vis=secList();
-  const first=vis.find(x=>!hasSec(r,x.dataset.sec)&&x.dataset.sec!=='note'&&x.dataset.sec!=='ego')||vis[0];vis.forEach(x=>setClosed(x,x!==first))}
+  const first=vis.find(x=>!hasSec(r,x.dataset.sec)&&x.dataset.sec!=='note')||vis.find(x=>x.dataset.sec==='ego')||vis[0];vis.forEach(x=>setClosed(x,x!==first))}
 function refreshClean(){Object.keys(SEC).forEach(s=>{if(!dirtySecs.has(s))fillSec(s);else secState(s)});headState()}
 function showWarn(sec,list,title){const w=$('#w-'+sec);w.innerHTML='<b>'+esc(title)+'</b><ul>'+list.map(x=>'<li>'+esc(x)+'</li>').join('')+'</ul>';w.hidden=false}
 function checkSec(sec){const err=[];if(sec==='sleep'&&F.sleep.value!==''){const v=+F.sleep.value;if(!Number.isFinite(v)||v<0||v>24)err.push('睡眠時間は0〜24時間で入れてください')}return{err}}
 function buildPatch(sec){const r=S.days[sel]||{},p={};
-  if(sec==='mood'){['mood','energy','anx'].forEach(k=>{if(fm[k]!=null)p[k]=fm[k]})}
-  else if(sec==='sleep'){if(F.sleep.value!=='')p.sleepH=Math.round(+F.sleep.value*2)/2;if(fm.sleepQ)p.sleepQ=fm.sleepQ}
-  else if(sec==='signs'){if(dirtySecs.has('signs')||hasSec(r,'signs'))p.signs=S.settings.signs.map(x=>x.t).filter(t=>fm.signs.has(t)).concat([...fm.signs].filter(t=>!S.settings.signs.some(x=>x.t===t)))}
+  if(sec==='sleep'){if(F.sleep.value!=='')p.sleepH=Math.round(+F.sleep.value*2)/2;if(fm.sleepQ)p.sleepQ=fm.sleepQ}
   else if(sec==='ego'){if(fm.ego&&fm.ego.s)p.ego=clone(fm.ego)}
   else{const t=F.note.value.replace(/\s+$/,'');if(t.trim())p.note=t}
   return p}
@@ -1630,9 +1572,6 @@ function egoHints(k){const r=S.days[k],pk=prevEgo(k);if(!r||!r.ego||!pk)return[]
   const big=SCALES.filter(x=>Math.abs(d[x])>=3);
   if(big.length&&!out.length)out.push(big.join('・')+' が前回から3点以上動いています。');
   if(!big.length)out.push('どの尺度も前回からの変化は2点以内で、形はおおむね安定しています。');
-  if(r.mood!=null&&r.energy!=null){
-    if(r.mood>=1&&r.energy>=1&&d.FC>=2)out.push('気分・活力が高めで、FC も上がっています。睡眠時間や、お金・予定の入れすぎに目を向けておくとよい時期かもしれません。');
-    if(r.mood<=-1&&r.energy<=-1&&(d.FC<=-2||d.AC>=2))out.push('気分・活力が低めで、グラフも内向き寄りです。予定を減らして休む余地をつくってください。')}
   return out}
 function egoDetail(k){const r=S.days[k];if(!r||!r.ego)return'';const cur=r.ego.s,pk=prevEgo(k);
   return egoChart(cur,pk?S.days[pk].ego.s:null,pk?md(pk):'')+'<ul class="escales">'+SCALES.map(x=>{const lv=egoLv(cur[x]);return '<li><span class="echip" style="background:var(--c-'+x+')">'+x+' '+cur[x]+'</span><span>'+SCALE_NAME[x]+'：'+EGO_LV[lv]+'</span><span class="desc">'+EGO_DESC[x][lv]+'</span></li>'}).join('')+'</ul>'+
@@ -1672,38 +1611,26 @@ $('#gWeek').addEventListener('change',e=>{if(!e.target.value)return;G.anchor=e.t
 [['#gFrom','from'],['#gTo','to']].forEach(([id,k])=>$(id).addEventListener('change',e=>{if(!e.target.value)return;G[k]=e.target.value;if(G.from>G.to){const t=G.from;G.from=G.to;G.to=t}saveG();renderChart()}));
 document.querySelector('#gRangeBox .gquick').addEventListener('click',e=>{const b=e.target.closest('[data-gq]');if(!b)return;G.to=ymd(new Date());G.from=ymd(addDays(new Date(),-(+b.dataset.gq-1)));saveG();renderChart()});
 document.querySelector('.gtabs').addEventListener('click',e=>{const b=e.target.closest('[data-gt]');if(!b)return;gTab=b.dataset.gt;try{localStorage.setItem('kibun-gtab',gTab)}catch(x){}renderChart()});
-const gTabs=['wave','ego','signs'];
+const gTabs=['ego','sleep'];
 const xLabels=(ks,X,H)=>{const n=ks.length,every=n<=8?1:n<=16?2:n<=45?5:n<=100?10:30;let g='';ks.forEach((d,i)=>{const dd=parse(d);if((i%every&&i!==n-1)||(i!==n-1&&every>1&&n-1-i<every*0.7))return;g+='<text x="'+X(i).toFixed(1)+'" y="'+(H-6)+'" text-anchor="middle"'+(d===sel?' style="fill:var(--ink);font-weight:700"':'')+'>'+(n<=8||dd.getDate()===1||i===0?(dd.getMonth()+1)+'/'+dd.getDate():dd.getDate())+'</text>'});return g};
 function seriesPath(vals,X,Y,color,dash){let path='',pts='',seg=[];const flush=()=>{if(seg.length>1)path+='M'+seg.map(p=>p.join(',')).join('L');else if(seg.length===1)path+='';seg=[]};
   vals.forEach((v,i)=>{if(v==null){flush();return}const p=[X(i).toFixed(1),Y(v).toFixed(1)];seg.push(p);pts+='<circle cx="'+p[0]+'" cy="'+p[1]+'" r="2.8" style="fill:'+color+';stroke:var(--surface-solid);stroke-width:1.2"/>'});flush();
   return '<path d="'+path+'" style="fill:none;stroke:'+color+';stroke-width:2;stroke-linejoin:round;stroke-linecap:round'+(dash?';stroke-dasharray:5 3':'')+'"/>'+pts}
-function waveChart(ks){const W=360,H=210,pl=30,pr=10,pt=10,pb=24,iw=W-pl-pr,ih=H-pt-pb,n=ks.length,X=i=>pl+(n>1?i*iw/(n-1):iw/2),Y=v=>pt+ih/2-v/3*(ih/2),bw=n>1?iw/(n-1):iw;
-  let g='<rect x="'+pl+'" y="'+pt+'" width="'+iw+'" height="'+(ih/2)+'" style="fill:var(--c-mood);opacity:.07"/><rect x="'+pl+'" y="'+(pt+ih/2)+'" width="'+iw+'" height="'+(ih/2)+'" style="fill:var(--c-down);opacity:.07"/>';
-  const si=ks.indexOf(sel);if(si>=0)g+='<rect class="selband" x="'+(X(si)-bw/2).toFixed(1)+'" y="'+pt+'" width="'+bw.toFixed(1)+'" height="'+ih+'"/>';
-  for(let v=-3;v<=3;v++){const y=Y(v).toFixed(1);g+='<line class="'+(v===0?'zero':'grid')+'" x1="'+pl+'" x2="'+(W-pr)+'" y1="'+y+'" y2="'+y+'"/><text x="'+(pl-4)+'" y="'+(+y+3)+'" text-anchor="end">'+sgn(v)+'</text>'}
-  if(FEAT().show_ego!==false)ks.forEach((d,i)=>{const r=S.days[d];if(r&&r.ego&&r.ego.s)g+='<path d="M'+(X(i)-4).toFixed(1)+','+pt+'L'+(X(i)+4).toFixed(1)+','+pt+'L'+X(i).toFixed(1)+','+(pt+6)+'Z" style="fill:var(--c-AC)"><title>'+md(d)+' エゴグラム</title></path>'});
-  g+=xLabels(ks,X,H);
-  const get=k=>ks.map(d=>{const r=S.days[d];return r&&r[k]!=null?+r[k]:null});
-  g+=seriesPath(get('energy'),X,Y,'var(--c-energy)',true)+seriesPath(get('mood'),X,Y,'var(--c-mood)',false);
-  return '<svg class="lc" viewBox="0 0 '+W+' '+H+'" role="img" aria-label="気分と活力の推移">'+g+'</svg>'}
 function barPanel(ks,key,max,color,name,fmt){const W=360,H=96,pl=30,pr=10,pt=8,pb=20,iw=W-pl-pr,ih=H-pt-pb,n=ks.length,X=i=>pl+(n>1?i*iw/(n-1):iw/2),bw=Math.max(2,Math.min(14,(n>1?iw/(n-1):iw)*.6));
   let g='';[0,max/2,max].forEach(t=>{const y=pt+ih-t/max*ih;g+='<line class="grid" x1="'+pl+'" x2="'+(W-pr)+'" y1="'+y+'" y2="'+y+'"/><text x="'+(pl-4)+'" y="'+(y+3)+'" text-anchor="end">'+t+'</text>'});
   const vals=ks.map(d=>{const r=S.days[d];return r&&r[key]!=null?+r[key]:null});
   vals.forEach((v,i)=>{if(v==null)return;const h=Math.min(v,max)/max*ih;g+='<rect x="'+(X(i)-bw/2).toFixed(1)+'" y="'+(pt+ih-h).toFixed(1)+'" width="'+bw.toFixed(1)+'" height="'+Math.max(1,h).toFixed(1)+'" rx="2" style="fill:'+color+';opacity:'+(ks[i]===sel?1:.75)+'"><title>'+md(ks[i])+' '+name+' '+fmt(v)+'</title></rect>'});
   g+=xLabels(ks,X,H);const got=vals.filter(v=>v!=null),avg=got.length?got.reduce((a,b)=>a+b,0)/got.length:null;
   return '<div class="panel1"><div class="phead"><span><i style="background:'+color+'"></i>'+name+' 平均 <b>'+(avg==null?'—':fmt(Math.round(avg*10)/10))+'</b></span></div><svg class="lc" viewBox="0 0 '+W+' '+H+'" role="img" aria-label="'+name+'の推移">'+g+'</svg></div>'}
-function waveHTML(ks){const core=ks.filter(k=>!isPad(k)),rs=core.map(k=>S.days[k]).filter(Boolean);
-  const av=(k)=>{const v=rs.map(r=>r[k]).filter(x=>x!=null);return v.length?v.reduce((a,b)=>a+b,0)/v.length:null};
-  const ms=rs.map(r=>r.mood).filter(v=>v!=null),hi=ms.filter(v=>v>=2).length,lo=ms.filter(v=>v<=-2).length,f1=v=>v==null?'—':(v>0?'+':'')+v.toFixed(1);
-  let h='<div class="tstats"><div><span>平均 気分</span><b>'+f1(av('mood'))+'</b></div><div><span>平均 活力</span><b>'+f1(av('energy'))+'</b></div><div><span>高めの日（+2以上）</span><b>'+hi+'日</b></div><div><span>低めの日（−2以下）</span><b>'+lo+'日</b></div></div>';
-  h+='<div class="tstats"><div><span>気分の幅</span><b>'+(ms.length?sgn(Math.min(...ms))+'〜'+sgn(Math.max(...ms)):'—')+'</b></div><div><span>平均 睡眠</span><b>'+(av('sleepH')==null?'—':av('sleepH').toFixed(1)+'h')+'</b></div><div><span>平均 不安</span><b>'+(av('anx')==null?'—':av('anx').toFixed(1))+'</b></div><div><span>気分の記録</span><b>'+ms.length+'/'+core.length+'日</b></div></div>';
-  h+=waveChart(ks)+'<div class="lcleg"><span><i style="background:var(--c-mood)"></i>気分</span><span><i style="background:repeating-linear-gradient(90deg,var(--c-energy) 0 5px,transparent 5px 8px)"></i>活力</span>'+(FEAT().show_ego!==false?'<span><i style="background:var(--c-AC);height:6px"></i>▼ エゴグラムをした日</span>':'')+'</div>';
-  h+='<div class="panels" style="margin-top:10px">'+(FEAT().show_sleep!==false?barPanel(ks,'sleepH',12,'var(--c-sleep)','睡眠時間',v=>v+'h'):'')+barPanel(ks,'anx',4,'var(--c-anx)','不安・イライラ',v=>v)+'</div>';
-  if(!ms.length)h+='<p class="empty" style="margin:6px 0 0">この期間はまだ気分の記録がありません。</p>';
-  const notes=[];if(hi>=2&&lo>=2)notes.push('この期間は、気分が高めの日と低めの日の両方がありました。この画面や「表に書き出す」の内容を持っていくと、通院先に波のようすを伝えやすくなります。');
-  if(rs.filter(r=>r.sleepH!=null&&r.sleepH<=4&&r.mood!=null&&r.mood>=2).length>=2)notes.push('睡眠が4時間以下で気分が高めの日が2日以上あります。眠らなくても平気な状態が続くときは、早めに相談しておくと安心です。');
-  if(notes.length)h+='<ul class="ehints wavenote">'+notes.map(t=>'<li>'+esc(t)+'</li>').join('')+'</ul>';
-  return h+'<p class="hint" style="margin:8px 0 0">気分・活力・不安は自分の感覚の記録です。点と点の間に記録のない日があるときは線が切れます。</p>'}
+function sleepHTML(ks){const core=ks.filter(k=>!isPad(k)),rs=core.map(k=>S.days[k]).filter(r=>r&&hasSec(r,'sleep')),hs=rs.map(r=>r.sleepH).filter(v=>v!=null);
+  if(!rs.length)return '<p class="empty">この期間はまだ睡眠の記録がありません。睡眠は任意の項目なので、入れたい日だけで大丈夫です。</p>';
+  const avg=hs.length?hs.reduce((a,b)=>a+b,0)/hs.length:null,q={};rs.forEach(r=>{if(r.sleepQ)q[r.sleepQ]=(q[r.sleepQ]||0)+1});
+  let h='<div class="tstats"><div><span>平均</span><b>'+(avg==null?'—':avg.toFixed(1)+'h')+'</b></div><div><span>いちばん短い</span><b>'+(hs.length?Math.min(...hs)+'h':'—')+'</b></div><div><span>いちばん長い</span><b>'+(hs.length?Math.max(...hs)+'h':'—')+'</b></div><div><span>記録した日</span><b>'+rs.length+'/'+core.length+'日</b></div></div>';
+  h+='<div class="panels">'+barPanel(ks,'sleepH',12,'var(--c-sleep)','睡眠時間',v=>v+'h')+'</div>';
+  if(Object.keys(q).length)h+='<div class="elist"><h3>眠りの感じ</h3>'+SLEEPQ.filter(x=>q[x]).map(x=>'<div class="erow"><b>'+q[x]+'日</b><span>'+esc(x)+'</span></div>').join('')+'</div>';
+  const eg=core.filter(k=>S.days[k]&&S.days[k].ego&&S.days[k].ego.s);
+  if(eg.length)h+='<p class="hint" style="margin:8px 0 0">この期間に簡易エゴグラムをした日：'+eg.map(md).join('、')+'</p>';
+  return h}
 function egoTrend(L){const W=360,H=190,pl=26,pr=10,pt=10,pb=24,iw=W-pl-pr,ih=H-pt-pb,n=L.length,X=i=>pl+(n>1?i*iw/(n-1):iw/2),Y=v=>pt+ih-v/10*ih;
   let g='';for(let t=0;t<=10;t+=2){const y=Y(t);g+='<line class="grid" x1="'+pl+'" x2="'+(W-pr)+'" y1="'+y+'" y2="'+y+'"/><text x="'+(pl-4)+'" y="'+(y+3)+'" text-anchor="end">'+t+'</text>'}
   g+=xLabels(L,X,H);SCALES.forEach(k=>g+=seriesPath(L.map(d=>S.days[d].ego.s[k]),X,Y,'var(--c-'+k+')',false));
@@ -1713,25 +1640,15 @@ function egoTabHTML(ks){const all=egoDays(),inP=all.filter(k=>k>=ks[0]&&k<=ks[ks
   const L=inP.length?inP:all.slice(-6),last=L[L.length-1];let h=inP.length?'':'<p class="hint" style="margin:0 0 8px">この期間にはチェックがないため、最近の'+L.length+'回を表示しています。</p>';
   h+='<div class="charthead"><h2 style="margin:0">'+md(last)+'の形</h2></div>'+egoDetail(last);
   if(L.length>=2)h+='<div class="tline"><h3>5つの尺度の変化（'+L.length+'回）</h3>'+egoTrend(L)+'</div>';
-  h+='<div class="elist"><h3>チェックした日</h3>'+L.slice().reverse().map(k=>{const r=S.days[k];return '<div class="erow"><b>'+md(k)+'</b><span>'+SCALES.map(x=>x+' '+r.ego.s[x]).join(' ')+(r.mood!=null?'<em>気分'+sgn(r.mood)+'</em>':'')+'</span></div>'}).join('')+'</div>';
-  return h+'<p class="hint" style="margin:8px 0 0">エゴグラムは性格の傾向（心のエネルギーの配分）を見るもので、躁うつなどの診断はできません。同じ間隔でくり返し、形がどう動くかを気分の記録と並べて見るのが使い方の目安です。</p>'}
-function signsHTML(ks){const core=ks.filter(k=>!isPad(k)),n=core.length,cnt={};
-  core.forEach(k=>{const r=S.days[k];if(r&&Array.isArray(r.signs))r.signs.forEach(t=>cnt[t]=(cnt[t]||0)+1)});
-  const rec=core.filter(k=>S.days[k]&&Array.isArray(S.days[k].signs)).length;
-  if(!rec)return '<p class="empty">この期間はまだ「様子のチェック」の記録がありません。</p>';
-  const names=S.settings.signs.map(x=>x.t).concat(Object.keys(cnt).filter(t=>!S.settings.signs.some(x=>x.t===t)));
-  const gDays=g=>core.filter(k=>{const r=S.days[k];return r&&Array.isArray(r.signs)&&r.signs.some(t=>signGroup(t)===g)}).length;
-  let h='<div class="tstats"><div><span>チェックした日</span><b>'+rec+'/'+n+'日</b></div><div><span>上がり気味のサインあり</span><b>'+gDays('up')+'日</b></div><div><span>下がり気味のサインあり</span><b>'+gDays('down')+'日</b></div><div><span>特になしの日</span><b>'+core.filter(k=>{const r=S.days[k];return r&&Array.isArray(r.signs)&&!r.signs.length}).length+'日</b></div></div>';
-  h+='<div class="tagcount">'+names.filter(t=>cnt[t]).sort((a,b)=>cnt[b]-cnt[a]).map(t=>{const col=SIGN_G[signGroup(t)][1];
-    return '<div class="tcrow"><div class="tchead"><b><i style="background:'+col+'"></i>'+esc(t)+'</b><span><b>'+cnt[t]+'</b>日</span></div><div class="tcstrip" style="grid-template-columns:repeat('+n+',minmax(0,1fr))">'+core.map(k=>{const r=S.days[k];const on=r&&Array.isArray(r.signs)&&r.signs.includes(t);return '<i class="'+(on?'on':r&&Array.isArray(r.signs)?'':'no')+'" style="'+(on?'background:'+col:'')+'" title="'+md(k)+'"></i>'}).join('')+'</div></div>'}).join('')+'</div>';
-  return h+'<div class="tcaxis" style="margin-top:4px"><span>'+md(core[0])+'</span><span>'+md(core[n-1])+'</span></div><p class="hint" style="margin:6px 0 0">濃い四角＝その日にあった、薄い四角＝チェックしていない日です。</p>'}
-function renderGraph(){if(!gTabs.includes(gTab)||document.querySelector('.gtabs [data-gt="'+gTab+'"]').hidden)gTab='wave';renderGPeriod();const ks=graphDays();
-  $('#chartTitle').textContent={wave:'気分の波',ego:'エゴグラム',signs:'様子のチェック'}[gTab];
-  $('#chart').innerHTML=gTab==='wave'?waveHTML(ks):gTab==='ego'?egoTabHTML(ks):signsHTML(ks)}
+  h+='<div class="elist"><h3>チェックした日</h3>'+L.slice().reverse().map(k=>{const r=S.days[k];return '<div class="erow"><b>'+md(k)+'</b><span>'+SCALES.map(x=>x+' '+r.ego.s[x]).join(' ')+(FEAT().show_sleep!==false&&r.sleepH!=null?'<em>睡眠'+r.sleepH+'h</em>':'')+'</span></div>'}).join('')+'</div>';
+  return h+'<p class="hint" style="margin:8px 0 0">エゴグラムは性格の傾向（心のエネルギーの配分）を見るもので、躁うつなどの診断はできません。同じ間隔でくり返し、形がどう動くかを見るのが使い方の目安です。</p>'}
+function renderGraph(){if(!gTabs.includes(gTab)||document.querySelector('.gtabs [data-gt="'+gTab+'"]').hidden)gTab='ego';renderGPeriod();const ks=graphDays();
+  $('#chartTitle').textContent={ego:'エゴグラム',sleep:'睡眠'}[gTab];
+  $('#chart').innerHTML=gTab==='ego'?egoTabHTML(ks):sleepHTML(ks)}
 function renderChart(){if(mainView==='graph')return renderGraph()}
 
 /* ---------- テキストでコピー・今日の記録 ---------- */
-const EX_ITEMS=[['mood','気分・活力・不安'],['sleep','睡眠'],['signs','様子のチェック'],['ego','簡易エゴグラム'],['note','出来事・メモ']];
+const EX_ITEMS=[['ego','簡易エゴグラム'],['sleep','睡眠'],['note','出来事・メモ']];
 let ex={range:'day',items:Object.fromEntries(EX_ITEMS.map(([k])=>[k,true])),empty:false,summary:true};
 try{const o=JSON.parse(localStorage.getItem('kibun-export')||'null');if(o)ex={...ex,...o,items:{...ex.items,...(o.items||{})}}}catch(e){}
 const saveEx=()=>{try{localStorage.setItem('kibun-export',JSON.stringify(ex))}catch(e){}};
@@ -1739,18 +1656,16 @@ function exDays(){const d=parse(sel);if(ex.range==='day')return[sel];
   if(ex.range==='week'){const st=addDays(d,-d.getDay());return[...Array(7)].map((_,i)=>ymd(addDays(st,i)))}
   const n=new Date(d.getFullYear(),d.getMonth()+1,0).getDate();return[...Array(n)].map((_,i)=>ymd(new Date(d.getFullYear(),d.getMonth(),i+1)))}
 function dayLines(k,it){const r=S.days[k],L=[];if(!r)return L;
-  if(it.mood&&hasSec(r,'mood'))L.push('気分：'+(r.mood!=null?sgn(r.mood)+'（'+MOOD_L[r.mood]+'）':'—')+' ／ 活力：'+(r.energy!=null?sgn(r.energy)+'（'+ENERGY_L[r.energy]+'）':'—')+' ／ 不安・イライラ：'+(r.anx!=null?r.anx+'（'+ANX_L[r.anx]+'）':'—'));
-  if(it.sleep&&hasSec(r,'sleep'))L.push('睡眠：'+(r.sleepH!=null?r.sleepH+'時間':'—')+(r.sleepQ?'（'+r.sleepQ+'）':''));
-  if(it.signs&&hasSec(r,'signs'))L.push('様子：'+(r.signs.length?r.signs.join('、'):'特になし'));
   if(it.ego&&hasSec(r,'ego'))L.push('簡易エゴグラム：'+SCALES.map(x=>x+' '+r.ego.s[x]).join(' ／ '));
+  if(it.sleep&&FEAT().show_sleep!==false&&hasSec(r,'sleep'))L.push('睡眠：'+(r.sleepH!=null?r.sleepH+'時間':'—')+(r.sleepQ?'（'+r.sleepQ+'）':''));
   if(it.note&&hasSec(r,'note'))L.push('メモ：'+r.note.trim().split('\n').map(x=>x.trim()).filter(Boolean).join(' ／ '));
   return L}
 function dayText(k){const L=dayLines(k,ex.items);if(!L.length)return ex.empty?['【'+md(k)+'】','（記録なし）']:null;return['【'+md(k)+'】'].concat(L)}
 function exportText(){const ks=exDays(),blocks=ks.map(dayText).filter(Boolean),out=[],nm=S.settings.appName||'My mood';
   if(ex.summary&&ex.range!=='day'){const rs=ks.map(k=>S.days[k]).filter(Boolean),ms=rs.map(r=>r.mood).filter(v=>v!=null),sl=rs.map(r=>r.sleepH).filter(v=>v!=null);
     out.push('■ '+nm+' '+md(ks[0])+'〜'+md(ks[ks.length-1]));out.push('記録した日：'+rs.length+'／'+ks.length+'日');
-    if(ms.length)out.push('気分：平均 '+(ms.reduce((a,b)=>a+b,0)/ms.length).toFixed(1)+'（幅 '+sgn(Math.min(...ms))+'〜'+sgn(Math.max(...ms))+'・高め'+ms.filter(v=>v>=2).length+'日・低め'+ms.filter(v=>v<=-2).length+'日）');
-    if(sl.length)out.push('睡眠：平均 '+(sl.reduce((a,b)=>a+b,0)/sl.length).toFixed(1)+'時間');out.push('')}
+    const eg=ks.filter(k=>S.days[k]&&S.days[k].ego&&S.days[k].ego.s);if(eg.length)out.push('簡易エゴグラム：'+eg.length+'回（'+eg.map(md).join('、')+'）');
+    if(sl.length&&FEAT().show_sleep!==false)out.push('睡眠：平均 '+(sl.reduce((a,b)=>a+b,0)/sl.length).toFixed(1)+'時間');out.push('')}
   else out.push('■ '+nm+(ex.range==='day'?'':' '+md(ks[0])+'〜'+md(ks[ks.length-1])));
   if(!blocks.length)out.push('この期間に記録はありません。');out.push(blocks.map(b=>b.join('\n')).join('\n\n'));
   return out.join('\n').replace(/\n{3,}/g,'\n\n').trim()}
@@ -1765,12 +1680,11 @@ $('#exRange').onclick=e=>{const b=e.target.closest('[data-r]');if(!b)return;ex.r
 $('#exOpts').onclick=e=>{const b=e.target.closest('[data-o]');if(!b)return;ex[b.dataset.o]=!ex[b.dataset.o];saveEx();renderExport()};
 $('#exItems').addEventListener('change',e=>{const k=e.target.dataset.ex;if(!k)return;ex.items[k]=e.target.checked;saveEx();renderExport()});
 function reportText(){const k=ymd(new Date()),r=S.days[k];if(!r)return null;
-  const all=Object.fromEntries(EX_ITEMS.map(([x])=>[x,true])),L=['【気分の記録】'+ymdJ(k)],ls=dayLines(k,all);
+  const all=Object.fromEntries(EX_ITEMS.map(([x])=>[x,true])),L=['【今日の記録】'+ymdJ(k)],ls=dayLines(k,all);
   ls.forEach(x=>{const i=x.indexOf('：');L.push('','■ '+x.slice(0,i),x.slice(i+1))});
-  {const y=S.days[ymd(addDays(new Date(),-1))];if(y&&y.mood!=null)L.push('','■ 昨日の気分',sgn(y.mood)+'（'+MOOD_L[y.mood]+'）')}
   return L.join('\n')}
 $('#copyReport').onclick=()=>{const t=reportText();
-  if(!t){toast('今日の記録がまだありません。気分などを記録してからコピーしてください');return}
+  if(!t){toast('今日の記録がまだありません。エゴグラムなどを記録してからコピーしてください');return}
   const done=()=>{$('#copyReport').textContent='コピーしました';setTimeout(()=>$('#copyReport').textContent='今日の記録をコピー',2500);toast('今日の記録をコピーしました。貼り付けて使えます')};
   const fallback=()=>{ex.range='day';renderExport();const ta=$('#exText');ta.value=t;$('#exCount').textContent=t.length+'文字';openSheet('#export');
     ta.focus();ta.select();ta.setSelectionRange(0,t.length);let ok=false;try{ok=document.execCommand('copy')}catch(e){}
@@ -1782,9 +1696,8 @@ $('#exCopy').onclick=()=>{const ta=$('#exText'),t=ta.value;
   if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(()=>{$('#exCopy').textContent='コピーしました';toast('コピーしました。貼り付けて使えます')},fallback)}else fallback()};
 
 /* ---------- 表に書き出す ---------- */
-const TB_COLS=[['date','日付',k=>k],['wd','曜日',k=>WD[parse(k).getDay()]],['mood','気分(-3〜+3)',(k,r)=>r.mood??''],['energy','活力(-3〜+3)',(k,r)=>r.energy??''],['anx','不安・イライラ(0〜4)',(k,r)=>r.anx??''],
-  ['sleepH','睡眠時間(時間)',(k,r)=>r.sleepH??''],['sleepQ','眠りの感じ',(k,r)=>r.sleepQ||''],['up','上がり気味のサイン',(k,r)=>Array.isArray(r.signs)?r.signs.filter(t=>signGroup(t)==='up').join('・'):''],['down','下がり気味のサイン',(k,r)=>Array.isArray(r.signs)?r.signs.filter(t=>signGroup(t)==='down').join('・'):''],['other','その他の様子',(k,r)=>Array.isArray(r.signs)?r.signs.filter(t=>signGroup(t)==='other').join('・'):''],
-  ...SCALES.map(x=>[x,'エゴグラム'+x,(k,r)=>r.ego&&r.ego.s?r.ego.s[x]:'']),['note','メモ',(k,r)=>(r.note||'').replace(/\n/g,' ／ ')]];
+const TB_COLS=[['date','日付',k=>k],['wd','曜日',k=>WD[parse(k).getDay()]],...SCALES.map(x=>[x,'エゴグラム'+x,(k,r)=>r.ego&&r.ego.s?r.ego.s[x]:'']),
+  ['sleepH','睡眠時間(時間)',(k,r)=>r.sleepH??''],['sleepQ','眠りの感じ',(k,r)=>r.sleepQ||''],['note','メモ',(k,r)=>(r.note||'').replace(/\n/g,' ／ ')]];
 let tb={range:'month',cols:{}};try{const o=JSON.parse(localStorage.getItem('kibun-table')||'null');if(o)tb={...tb,...o}}catch(e){}
 const saveTb=()=>{try{localStorage.setItem('kibun-table',JSON.stringify(tb))}catch(e){}};
 function tbDays(){const d=parse(sel),today=new Date();
@@ -1950,18 +1863,10 @@ let featTimer;const featSave=()=>{clearTimeout(featTimer);featTimer=setTimeout((
 function renderFeatSettings(){renderCardSettings();if($('#welcomeOn'))$('#welcomeOn').checked=S.settings.welcome!==false;renderSyncNote();renderTextSettings();renderSlots();
   $('#nmTitle').value=S.settings.appName||'My mood';$('#nmSub').value=S.settings.appSub??'';renderSubMode();renderLook();
   const f=S.settings.features;document.querySelectorAll('[data-feat]').forEach(c=>c.checked=f[c.dataset.feat]!==false);
-  $('#featEgo').hidden=f.show_ego===false;$('#egoEvery').value=S.settings.egoEvery;renderSignSettings()}
+  $('#egoEvery').value=S.settings.egoEvery}
 document.querySelectorAll('[data-feat]').forEach(c=>c.addEventListener('change',()=>{S.settings.features={...S.settings.features,[c.dataset.feat]:c.checked};saveSettings();renderFeatSettings();render(false);refreshClean()}));
 $('#egoEvery').addEventListener('change',e=>{S.settings.egoEvery=Math.min(60,Math.max(3,+e.target.value||14));e.target.value=S.settings.egoEvery;featSave()});
-function renderSignSettings(){const L=S.settings.signs;
-  $('#signSet').innerHTML=L.length?L.map((x,i)=>'<div class="signset" data-si="'+i+'"><input type="text" data-sf="t" value="'+esc(x.t)+'" placeholder="例：夜中に買い物をした" aria-label="項目の名前"><select data-sf="g" aria-label="分け方">'+Object.entries(SIGN_G).map(([g,[n]])=>'<option value="'+g+'"'+(x.g===g?' selected':'')+'>'+n.replace('気味のサイン','')+'</option>').join('')+'</select><button type="button" class="xbtn" data-sdel aria-label="この項目を消す">×</button></div>').join(''):'<p class="hint" style="margin:0">項目がありません。</p>'}
-$('#signSet').addEventListener('input',e=>{const row=e.target.closest('[data-si]');if(!row||e.target.dataset.sf!=='t')return;S.settings.signs[+row.dataset.si].t=e.target.value.trim();featSave()});
-$('#signSet').addEventListener('change',e=>{const row=e.target.closest('[data-si]');if(!row||e.target.dataset.sf!=='g')return;S.settings.signs[+row.dataset.si].g=e.target.value;featSave()});
-$('#signSet').addEventListener('click',e=>{const row=e.target.closest('[data-si]');if(!row||!e.target.closest('[data-sdel]'))return;S.settings.signs.splice(+row.dataset.si,1);renderSignSettings();featSave()});
-$('#addSign').onclick=()=>{S.settings.signs.push({t:'',g:'up'});renderSignSettings();const r=$('#signSet').lastElementChild;if(r){const i=r.querySelector('input');if(i)i.focus()}};
-let signArm=null;$('#resetSigns').onclick=e=>{const b=e.target;if(!signArm){b.textContent='もう一度押すと戻します';signArm=setTimeout(()=>{signArm=null;b.textContent='初期状態に戻す'},3000);return}
-  clearTimeout(signArm);signArm=null;b.textContent='初期状態に戻す';S.settings.signs=clone(DEF_SIGNS);renderSignSettings();featSave();toast('様子のチェックの項目を初期状態に戻しました（記録は消えません）')};
-const GC_ROWS=[['mood','気分'],['down','気分が低い日の色（カレンダー）'],['energy','活力'],['anx','不安・イライラ'],['sleep','睡眠時間'],...SCALES.map(k=>[k,'エゴグラム '+k])];
+const GC_ROWS=[...SCALES.map(k=>[k,'エゴグラム '+k]),['sleep','睡眠時間']];
 function renderGraphColors(){const cs=S.settings.colors||{};
   $('#gColors').innerHTML=GC_ROWS.map(([k,n])=>'<div class="colorrow"><span>'+esc(n)+'</span><span class="gsw">'+(cs[k]&&cs[k]!==DEF.colors[k]?'<button type="button" class="btn ghost sm" data-gcr="'+k+'">戻す</button>':'')+'<input type="color" data-gc="'+k+'" value="'+(cs[k]||DEF.colors[k])+'" aria-label="'+esc(n)+'の色"></span></div>').join('')}
 $('#gColors').addEventListener('input',e=>{const k=e.target.dataset.gc;if(!k)return;S.settings.colors[k]=e.target.value;applyLook();if(mainView==='graph')renderChart();renderCal();clearTimeout(colorTimer);colorTimer=setTimeout(()=>{saveSettings();renderGraphColors()},600)});
@@ -2109,15 +2014,14 @@ $('#nmSub').addEventListener('change',e=>{S.settings.appSub=e.target.value.trim(
 /* ---------- 使い方ガイド（どこを押すと何ができるか） ---------- */
 const HELP=[
  ['記録する',[
-  ['今日の気分をすぐ記録したい','記録画面の一番上の「−3〜＋3」のボタンを押すだけで、今日の気分として記録されます。押し直すと上書きします。','main','input','#qMood'],
-  ['活力・不安・睡眠もくわしく記録したい','下の記録フォームで「気分・活力」「睡眠」などの欄を開き、選んでから各欄の「記録」ボタンか「まとめて記録」を押します。','main','input','#secTabs'],
+  ['簡易エゴグラムをしたい','記録画面の一番上の「いまチェック」か、記録フォームの「簡易エゴグラム」の「チェックをはじめる」を押し、25問に答えます（約3分）。結果はその日の記録として残り、前回との違いも出ます。目安の間隔は「設定 → 使う機能」で決められます。','main','input','#egoDue'],
+  ['睡眠を記録したい（任意）','記録フォームの「睡眠（任意）」に睡眠時間と眠りの感じを入れます。入れたい日だけで大丈夫です。使わないときは「設定 → 使う機能」で欄ごと隠せます。','main','input','#secTabs'],
+  ['メモを残したい','「出来事・メモ」に書きます。上のボタンを押すと「出来事：」などの見出しが入ります。','main','input','#noteChips'],
   ['別の日の記録を見る・直したい','記録フォームの日付の左右にある ‹ › で日を移動します。カレンダーで日付を押しても移動できます。','main','input','#dPrev'],
-  ['いつもと違うサインをメモしたい','「様子のチェック」で当てはまるものを押して記録します。上がり気味・下がり気味のサインに分かれていて、項目は「設定 → 様子のチェックの項目」で変えられます。','main','input','#signChips'],
-  ['簡易エゴグラムをしたい','「簡易エゴグラム」の欄の「チェックをはじめる」を押し、25問に答えます（約3分）。結果はその日の記録として残り、前回との違いも出ます。目安の間隔は「設定 → 使う機能」で決められます。','main','input','#egoStart'],
   ['間違えたので戻したい','「↶ 戻す」で直前の変更を取り消せます。右上の時計ボタンでは過去の変更履歴から戻せます。','main','input','#undoLast']]],
  ['見る・振り返る',[
-  ['カレンダーで波を見たい','「カレンダー」を押すと、気分が高い日はオレンジ、低い日は青で色が付きます。色が濃いほど ±3 に近い日です。','main','cal','#legend'],
-  ['グラフで変化を見たい','「グラフ・分析」の「気分の波」で気分・活力・睡眠・不安の推移、「エゴグラム」で5つの尺度の形と変化、「様子」でサインの回数が見られます。','main','graph','.gtabs'],
+  ['カレンダーで見たい','「カレンダー」を押すと、エゴグラムをした日に紫の点、メモのある日に灰色の点が付き、数字で睡眠時間が出ます。','main','cal','#legend'],
+  ['グラフで変化を見たい','「グラフ・分析」の「エゴグラム」で5つの尺度の形と変化、「睡眠」で睡眠時間の推移が見られます。','main','graph','.gtabs'],
   ['通院先に見せたい・送りたい','「グラフ・分析」の「テキストでコピー」で期間の記録を文章に、「表に書き出す」で表やCSVにできます。今日の分だけなら、記録画面の「今日の記録をコピー」が早いです。','main','graph','#openExport'],
   ['記録の抜けを確認したい','下の「記録状況」タブで、記録を始めた日、抜けている日、エゴグラムの間隔が分かります。','status',null,'.tabs [data-page=status]']]],
  ['自分好みにする',[
